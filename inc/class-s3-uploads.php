@@ -94,7 +94,7 @@ class S3_Uploads {
 		$dirs['basedir'] = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['basedir'] );
 		echo "=".$dirs['basedir']."=\n";
 		echo "=".$dirs['path']."=\n";
-		echo "=".$dirs['WP_CONTENT_DIR']."=\n";
+		echo "=".WP_CONTENT_DIR."=\n";
 		echo "=".'s3://' . $this->bucket."=\n";
 		echo "=".$this->get_s3_url()."=\n";
 		if ( ! defined( 'S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL' ) || ! S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL ) {
