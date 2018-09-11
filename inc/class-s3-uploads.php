@@ -90,8 +90,8 @@ class S3_Uploads {
 
 		$this->original_upload_dir = $dirs;
 
-		$dirs['path']    = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['path'] );
-		$dirs['basedir'] = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['basedir'] );
+		$dirs['path']    = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket . $this->bucket_dir, $dirs['path'] );
+		$dirs['basedir'] = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket . $this->bucket_dir, $dirs['basedir'] );
 		echo "=".$dirs['basedir']."=\n";
 		echo "=".$dirs['path']."=\n";
 		echo "=".WP_CONTENT_DIR."=\n";
