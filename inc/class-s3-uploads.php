@@ -4,6 +4,7 @@ class S3_Uploads {
 
 	private static $instance;
 	private        $bucket;
+	private        $bucket_dir;
 	private        $bucket_url;
 	private        $key;
 	private        $secret;
@@ -20,6 +21,7 @@ class S3_Uploads {
 		if ( ! self::$instance ) {
 			self::$instance = new S3_Uploads(
 				S3_UPLOADS_BUCKET,
+				defined( 'S3_UPLOADS_PATH' ) ? S3_UPLOADS_PATH : null,
 				defined( 'S3_UPLOADS_KEY' ) ? S3_UPLOADS_KEY : null,
 				defined( 'S3_UPLOADS_SECRET' ) ? S3_UPLOADS_SECRET : null,
 				defined( 'S3_UPLOADS_BUCKET_URL' ) ? S3_UPLOADS_BUCKET_URL : null,
@@ -30,9 +32,10 @@ class S3_Uploads {
 		return self::$instance;
 	}
 
-	public function __construct( $bucket, $key, $secret, $bucket_url = null, $region = null ) {
+	public function __construct( $bucket, $bucket_dir, $key, $secret, $bucket_url = null, $region = null ) {
 
 		$this->bucket     = $bucket;
+		$this->bucket_dir = $bucket_dir;
 		$this->key        = $key;
 		$this->secret     = $secret;
 		$this->bucket_url = $bucket_url;
@@ -88,7 +91,7 @@ class S3_Uploads {
 		$this->original_upload_dir = $dirs;
 
 		$dirs['path']    = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['path'] );
-		$dirs['basedir'] = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['basedir'] );
+		$dirs['basedir'] = $this->bucket_dir.str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['basedir'] );
 
 		if ( ! defined( 'S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL' ) || ! S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL ) {
 
@@ -143,7 +146,7 @@ class S3_Uploads {
 		}
 
 		$bucket = strtok( $this->bucket, '/' );
-		$path   = substr( $this->bucket, strlen( $bucket ) );
+		$path   = $this->bucket_dir . substr( $this->bucket, strlen( $bucket ));
 
 		return apply_filters( 's3_uploads_bucket_url', 'https://' . $bucket . '.s3.amazonaws.com' . $path );
 	}
